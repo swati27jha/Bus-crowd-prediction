@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CrowdFlow AI — Smart Bus Crowd Prediction & Live Edge System</title>
+  <meta name="description" content="A premium real-time AI-powered edge computing bus crowd prediction dashboard using real-time passenger counts and dynamic routing algorithms.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Premium Header & Status Bar -->
+  <header>
+    <div class="brand">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M4 16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2H6c-1.1 0-2 .9-2 2v8zm2-8h12v5H6V8zm1.5 7c.83 0 1.5-.67 1.5-1.5S8.33 12 7.5 12 6 12.67 6 13.5 6.67 15 7.5 15zm9 0c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5-1.5.67-1.5 1.5.67 1.5 1.5 1.5zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 13v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <h1>CROWDFLOW AI</h1>
+        <p>Edge Vision Transit Analytics</p>
+      </div>
+    </div>
+
+    <div class="system-status">
+      <div class="status-indicator">
+        <div class="status-dot pulsing" id="status-dot"></div>
+        <span id="status-label">Sensors Syncing</span>
+      </div>
+      <div class="status-indicator latency-indicator">
+        Latency: <span id="latency-val">12</span>ms
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Dashboard Grid -->
+  <main class="dashboard-container">
+    
+    <!-- Left Column: Route Search & Seat Strategy -->
+    <div class="glass-card">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+        </svg>
+        <span>Transit Route Finder</span>
+      </div>
+
+      <div class="search-form">
+        <div class="input-group">
+          <label for="from-station">From Station</label>
+          <div class="input-field-wrapper">
+            <svg class="input-field-icon" viewBox="0 0 24 24" stroke-width="2">
+              <circle cx="12" cy="12" r="3" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 2a10 10 0 100 20 10 10 0 000-20z" />
+            </svg>
+            <input type="text" id="from-station" class="input-field" placeholder="E.g., Hebbal" value="Hebbal">
+          </div>
+        </div>
+
+        <button type="button" class="swap-btn" id="btn-swap-stations" title="Swap stations">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+          </svg>
+        </button>
+
+        <div class="input-group">
+          <label for="to-station">To Station</label>
+          <div class="input-field-wrapper">
+            <svg class="input-field-icon" viewBox="0 0 24 24" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <input type="text" id="to-station" class="input-field" placeholder="E.g., Central Silk Board" value="Central Silk Board">
+          </div>
+        </div>
+
+        <button type="button" class="search-btn" id="btn-search-route">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          Analyze Active Routes
+        </button>
+      </div>
+
+      <!-- Smart Seat Strategy Advisor -->
+      <div class="glass-card advisor-card">
+        <div class="advice-header">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+          </svg>
+          <span>Smart Seat Strategist</span>
+        </div>
+        <div class="advice-container">
+          <p class="advice-text" id="advice-strategy-text">
+            Search a route to activate strategy suggestions. Currently tracking bus network occupancy levels in real-time.
+          </p>
+          <div class="high-occupancy-stations" id="advisor-stations-list">
+            <!-- Populated dynamically via JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Center Column: Live Camera & ML Predictor -->
+    <div class="glass-card">
+      <div class="simulator-header">
+        <div class="card-title" style="border:0; padding:0; margin:0;">
+          <svg viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+          </svg>
+          <span id="camera-feed-title">Live Passenger Camera Inside Bus</span>
+        </div>
+
+        <div class="bus-selector-wrapper">
+          <label for="bus-number-select">Bus:</label>
+          <select id="bus-number-select" class="select-bus">
+            <option value="KA-57-F-0145" selected>KA-57-F-0145 (Active)</option>
+            <option value="KA-57-F-1209">KA-57-F-1209 (Active)</option>
+            <option value="KA-57-F-0888">KA-57-F-0888 (Standby)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Live Video Canvas Overlay -->
+      <div class="camera-monitor-box">
+        <canvas id="cameraCanvas" class="camera-feed-canvas"></canvas>
+        
+        <!-- Live Camera Event Feed Overlay -->
+        <div class="camera-events-overlay" id="camera-events-overlay">
+          <div class="camera-events-header">LIVE SENSOR TELEMETRY</div>
+          <div class="camera-events-list" id="camera-events-list">
+            <div style="font-size: 0.65rem; color: var(--text-muted); text-align: center; padding: 0.5rem 0;">Waiting for sensor trigger...</div>
+          </div>
+        </div>
+        
+        <div class="feed-hud-overlay">
+          <div class="hud-top">
+            <div class="camera-tag">
+              <span class="status-dot" style="background-color: var(--color-danger); box-shadow: 0 0 6px var(--color-danger);"></span>
+              LIVE FEED
+            </div>
+            
+            <div class="hud-trip-counters">
+              <span class="count-in">IN: <span id="hud-count-in-val">38</span></span>
+              <span class="count-out" style="margin-left: 10px;">OUT: <span id="hud-count-out-val">14</span></span>
+            </div>
+            
+            <div class="camera-model-badge">
+              MODEL: YOLOv8-Pose + ByteTrack
+            </div>
+          </div>
+          
+          <div class="cross-line-label">
+            IN / OUT DETECTOR THRESHOLD LINE
+          </div>
+
+          <div class="hud-bottom">
+            <div class="hud-info">
+              <div class="hud-metric">BUS NO: <span id="hud-bus-id">KA-57-F-0145</span></div>
+              <div class="hud-metric">HARDWARE: <span>NVIDIA Orin Nano</span></div>
+            </div>
+            <div class="hud-info" style="text-align: right;">
+              <div class="hud-metric">FPS: <span id="hud-fps-val">30.2</span></div>
+              <div class="hud-metric">CLOCK: <span id="hud-timestamp">2026-05-27 20:19:27</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Simulator manual overrides -->
+      <div class="simulator-controls">
+        <div class="controls-left">
+          <span class="controls-label">Interactive Mode</span>
+          <div class="auto-toggle-wrapper">
+            <label class="switch">
+              <input type="checkbox" id="auto-sim-toggle" checked>
+              <span class="slider"></span>
+            </label>
+            <span class="toggle-text" id="toggle-status-text">Auto Simulation</span>
+          </div>
+        </div>
+
+        <div class="controls-right">
+          <button type="button" class="override-btn btn-in" id="btn-manual-in" title="Simulate passenger boarding">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+            Board (+1)
+          </button>
+          <button type="button" class="override-btn btn-out" id="btn-manual-out" title="Simulate passenger exiting">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4" />
+            </svg>
+            Alight (-1)
+          </button>
+        </div>
+      </div>
+
+      <!-- Real-Time Metrics & Predictive Gauges -->
+      <div class="occupancy-dashboard">
+        <div class="stat-box">
+          <div class="stat-value status-alert-low" id="occupancy-count-val">24</div>
+          <div class="stat-label">Real-Time Occupancy</div>
+        </div>
+
+        <div class="stat-box">
+          <div class="stat-value primary" id="occupancy-percentage-val">60%</div>
+          <div class="stat-label">Capacity Index</div>
+        </div>
+
+        <div class="occupancy-bar-container">
+          <div class="bar-meta">
+            <span>Crowd Level: <strong id="crowd-level-badge" style="color: var(--color-warning);">MODERATE</strong></span>
+            <span>Limit: 40 Passengers</span>
+          </div>
+          <div class="bar-outer">
+            <div id="occupancy-bar-fill" class="bar-inner warning" style="width: 60%;"></div>
+          </div>
+        </div>
+      </div>
+    </div>    <!-- Right Column: Google Maps Live Tracking -->
+    <div class="glass-card">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        <span>Live GPS Bus Tracking Map</span>
+      </div>
+
+      <div class="map-container" style="width: 100%; height: 100%; min-height: 400px; border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05);">
+        <iframe 
+          id="gmap-iframe"
+          width="100%" 
+          height="100%" 
+          frameborder="0" 
+          scrolling="no" 
+          marginheight="0" 
+          marginwidth="0" 
+          src="https://maps.google.com/maps?q=Hebbal,Bengaluru&t=&z=12&ie=UTF8&iwloc=&output=embed"
+          style="border:0; filter: invert(90%) hue-rotate(180deg);" 
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+
+    <!-- Bottom Full Width Area: Interactive Heatmap Station Route Tracker -->
+    <div class="glass-card full-width-section full-width-tablet">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+        </svg>
+        <span>Live Route Flow & station Crowd highlights (Smart seat finding)</span>
+      </div>
+
+      <p class="advice-text" style="font-size: 0.85rem; margin-top: -0.25rem;">
+        This route profile tracks which stations load the most passengers. Highlighted stops are critical crowd-loading stations. If you are near a high-load station, move to it or a preceding station to secure a seat early! Click any stop to inspect live occupancy forecast metrics.
+      </p>
+
+      <!-- Heatmap visualization -->
+      <div class="route-tracker-map" id="route-flow-container">
+        <div class="route-tracker-line"></div>
+        <!-- Loaded dynamically in app.js -->
+      </div>
+
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2026 CrowdFlow AI Technologies Inc. All Rights Reserved. Systems compliant with Transit IoT Protocol (V4).</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
